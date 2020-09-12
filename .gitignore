@@ -2,9 +2,7 @@
 
 # dependencies
 ias-front/node_modules
-ias-front/vscode
-
-ias-back/node_modules
+ias-front/.vscode
 
 /.pnp
 .pnp.js
