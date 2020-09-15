@@ -1,5 +1,7 @@
-import React from "react";
-import { Form, Input, InputNumber, Button, DatePicker } from "antd";
+import React, { useState } from "react";
+import { Form, Input, Button } from "antd";
+import { baseURL } from "../../../api";
+import { makeUrl } from "../../../api/makeUrl";
 
 const layout = {
   labelCol: {
@@ -11,69 +13,79 @@ const layout = {
 };
 
 const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not validate email!",
-    number: "${label} is not a validate number!",
-  },
-  number: {
-    range: "${label} must be between ${min} and ${max}",
-  },
+  required: "${label} es requerido!",
 };
 function CalcularHoras(props) {
+  const [tecnico, setTecnico] = useState("");
+  const [semana, setSemana] = useState("");
+
+  const handleChangeTecnico = (e) => {
+    setTecnico(e.target.value);
+  };
+
+  const handleChangeSemena = (e) => {
+    setSemana(e.target.value);
+  };
+
   const onFinish = (values) => {
-    console.log(values);
+    if (tecnico !== "" && semana !== "") {
+      let data = {
+        cc_tecnico: tecnico,
+        semana,
+      };
+      fetch(makeUrl(`${baseURL}/servicio`, data), {
+        method: "GET",
+      })
+        .then((resp) => resp.json().then((res) => console.log(res)))
+        .catch((err) => console.log(err));
+    }
   };
-  const config = {
-    rules: [
-      {
-        type: "object",
-        required: true,
-        message: "Please select time!",
-      },
-    ],
-  };
+
   return (
     <>
-      <h3 style={{ marginTop: 50, marginLeft: 60 }}>
-        Cálculo de horas de trabajo
-      </h3>
-      <Form
-        style={{ marginTop: 50, marginRight: 60, marginLeft: -150 }}
-        {...layout}
-        name="nest-messages"
-        onFinish={onFinish}
-        validateMessages={validateMessages}
-      >
-        <Form.Item
-          name={["calcularHoras", "identificacion"]}
-          label="Identificacion del tecnico"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
+      <div>
+        <h3 style={{ marginTop: 50, marginLeft: 60 }}>
+          Cálculo de horas de trabajo
+        </h3>
+        <Form
+          style={{ marginTop: 50 }}
+          {...layout}
+          name="nest-messages"
+          onFinish={onFinish}
+          validateMessages={validateMessages}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name={["calcularHoras", "numeroSemana"]}
-          label="Número de semana"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
+          <Form.Item
+            name={["calcularHoras", "identificacion"]}
+            label="Identificacion del tecnico"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+            onChange={handleChangeTecnico}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name={["calcularHoras", "numeroSemana"]}
+            label="Número de semana"
+            rules={[
+              {
+                required: true,
+              },
+            ]}
+            onChange={handleChangeSemena}
+          >
+            <Input />
+          </Form.Item>
 
-        <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-          <Button type="primary" htmlType="submit">
-            Calcular!
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+            <Button type="primary" htmlType="submit">
+              Calcular!
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
     </>
   );
 }

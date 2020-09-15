@@ -9,9 +9,11 @@ function Home() {
       <p>
         JavaScript <br />
         React - hooks <br />
+        react-router-dom <br />
+        Fetch - API <br />
         Ant Design <br />
         Material-UI <br />
-        react-router-dom <br />
+        Sweetalert2
       </p>
       <h3>Back:</h3>
       <p>
@@ -19,11 +21,10 @@ function Home() {
         nodeJS <br />
         ExpressJS <br />
         body-parser <br />
-        {/* react-router-dom <br/> */}
       </p>
       <h3>DATA BASE:</h3>
       <p>
-        MongoDB <br />
+        MySQL <br />
       </p>
     </div>
   );
