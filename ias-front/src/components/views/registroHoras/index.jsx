@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Button, DatePicker, Space } from "antd";
-import { makeUrl } from "../../../api/makeUrl";
-import { baseURL } from "../../../api";
+import * as apiCall from "../../../api/apiCall";
 
 const { RangePicker } = DatePicker;
 
@@ -18,7 +17,7 @@ const validateMessages = {
   required: "${label} es requerido!",
 };
 
-function RegistroHoras(props) {
+export function RegistroHoras(props) {
   const [tecnico, setTecnico] = useState("");
   const [servicio, setServicio] = useState("");
   const [fechaInicio, setFechaInicio] = useState("");
@@ -45,20 +44,18 @@ function RegistroHoras(props) {
       fechaFin !== ""
     ) {
       let data = {
-        cc_tecnico: tecnico,
+        tecnico,
         servicio,
         fechaInicio,
         fechaFin,
       };
-
-      fetch(makeUrl(`${baseURL}/reporte-servicio`, data), {
-        method: "POST",
+      let dataResponse = apiCall.postServicio(data);
+      dataResponse.then((data) => {
+        console.log('data: ', data);
       })
-        .then((resp) => resp.json().then((res) => console.log(res)))
-        .catch((err) => console.log(err));
     }
   };
-  
+
   return (
     <>
       <div>
@@ -86,7 +83,7 @@ function RegistroHoras(props) {
           </Form.Item>
           <Form.Item
             name={["registroServicio", "servicio"]}
-            label="Identificacion del servicio"
+            label="Identificacion del tipo de servicio"
             rules={[
               {
                 required: true,
@@ -128,5 +125,3 @@ function RegistroHoras(props) {
     </>
   );
 }
-
-export default RegistroHoras;

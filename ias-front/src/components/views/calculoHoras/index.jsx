@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
-import { baseURL } from "../../../api";
-import { makeUrl } from "../../../api/makeUrl";
+import TablaCalculo from "./tablaCalculo";
+import * as apiCall from "../../../api/apiCall";
 
 const layout = {
   labelCol: {
@@ -15,9 +15,11 @@ const layout = {
 const validateMessages = {
   required: "${label} es requerido!",
 };
-function CalcularHoras(props) {
+
+export function CalcularHoras(props) {
   const [tecnico, setTecnico] = useState("");
   const [semana, setSemana] = useState("");
+  const [dataF, setData] = useState([]);
 
   const handleChangeTecnico = (e) => {
     setTecnico(e.target.value);
@@ -27,17 +29,16 @@ function CalcularHoras(props) {
     setSemana(e.target.value);
   };
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     if (tecnico !== "" && semana !== "") {
       let data = {
         cc_tecnico: tecnico,
         semana,
       };
-      fetch(makeUrl(`${baseURL}/servicio`, data), {
-        method: "GET",
-      })
-        .then((resp) => resp.json().then((res) => console.log(res)))
-        .catch((err) => console.log(err));
+      let dataResponse = apiCall.getCalculo(data);
+      dataResponse.then((data) => {
+        data !== undefined ? setData(data) : setData([]);
+      });
     }
   };
 
@@ -86,8 +87,7 @@ function CalcularHoras(props) {
           </Form.Item>
         </Form>
       </div>
+      {dataF !== undefined ? <TablaCalculo data={dataF} /> : null}
     </>
   );
 }
-
-export default CalcularHoras;

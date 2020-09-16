@@ -1,12 +1,8 @@
 import React from "react";
-import {
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
-import CalcularHoras from "../views/calculoHoras";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { CalcularHoras } from "../views/calculoHoras";
 import Home from "../views/home";
-import RegistroHoras from "../views/registroHoras";
+import { RegistroHoras } from "../views/registroHoras";
 
 export const RouterLayout = () => {
   return (
