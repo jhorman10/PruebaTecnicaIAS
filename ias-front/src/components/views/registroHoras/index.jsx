@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Input, Button, DatePicker, Space } from "antd";
 import * as apiCall from "../../../api/apiCall";
+import Swal from "sweetalert2";
 
 const { RangePicker } = DatePicker;
 
@@ -22,6 +23,7 @@ export function RegistroHoras(props) {
   const [servicio, setServicio] = useState("");
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
+  const [res, setRes] = useState([]);
 
   const handleChangeTecnico = (e) => {
     setTecnico(e.target.value);
@@ -36,7 +38,7 @@ export function RegistroHoras(props) {
     setFechaFin(dataString[1]);
   };
 
-  const onFinish = (values) => {
+  const onFinish = () => {
     if (
       tecnico !== "" &&
       servicio !== "" &&
@@ -51,8 +53,24 @@ export function RegistroHoras(props) {
       };
       let dataResponse = apiCall.postServicio(data);
       dataResponse.then((data) => {
-        console.log('data: ', data);
-      })
+        if (data.status === 200) {
+          setRes(data);
+          Swal.fire({
+            position: "center-center",
+            icon: "success",
+            title: "Se ha guardado correctamente la información",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        } else {
+          setRes([]);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocurrio un error, no se pudo guardar la información!",
+          });
+        }
+      });
     }
   };
 

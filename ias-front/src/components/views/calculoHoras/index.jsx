@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Input, Button } from "antd";
 import TablaCalculo from "./tablaCalculo";
 import * as apiCall from "../../../api/apiCall";
+import Swal from "sweetalert2";
 
 const layout = {
   labelCol: {
@@ -37,7 +38,23 @@ export function CalcularHoras(props) {
       };
       let dataResponse = apiCall.getCalculo(data);
       dataResponse.then((data) => {
-        data !== undefined ? setData(data) : setData([]);
+        if (data.length !== 0) {
+          setData(data);
+          Swal.fire({
+            position: "center-center",
+            icon: "success",
+            title: "Se ha consultado correctamente la información",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        } else {
+          setData([]);
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Ocurrio un error, no se pudo consultar la información!",
+          });
+        }
       });
     }
   };

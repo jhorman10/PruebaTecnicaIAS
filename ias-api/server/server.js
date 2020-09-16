@@ -16,7 +16,7 @@ app.get("/servicio", (req, res) => {
   let { cc_tecnico, semana } = query;
 
   mysqlCon.connection.query(
-    `SELECT HA.HORA_INICIO, HA.HORA_FIN, D.DIA_SEMANA, S.NUMERO_SEMANA, TS.ID_TECNICO
+    `SELECT HA.TOTAL_HORAS, HA.HORA_INICIO, HA.HORA_FIN, D.DIA_SEMANA, S.NUMERO_SEMANA, TS.ID_TECNICO
   FROM 
   HORA_ATENCION HA 
   LEFT JOIN DIA D ON HA.ID_HORA_ATENCION = D.ID_DIA
@@ -27,8 +27,9 @@ app.get("/servicio", (req, res) => {
       if (err) throw err;
       data = results;
       res.json({
-        ok: true,
         data,
+        ok: true,
+        status: 200,
       });
     }
   );
@@ -39,6 +40,12 @@ app.post("/reporte-servicio", (req, res, next) => {
   let { fechaFin, fechaInicio, servicio, tecnico } = query;
   let diaSemana = moment(fechaInicio).day();
   let numeroSemana = moment(fechaInicio).format("w");
+  let horaInicio = moment(fechaInicio).format("HH");
+  let horaFin = moment(fechaFin).format("HH");
+  let totalHoras = horaFin - horaInicio;
+  console.log("horaInicio: ", horaInicio);
+  console.log("horaFin: ", horaFin);
+  console.log("totalHoras: ", totalHoras);
   let body = {
     fechaInicio,
     fechaFin,
@@ -86,7 +93,7 @@ app.post("/reporte-servicio", (req, res, next) => {
     }
   );
   mysqlCon.connection.query(
-    `INSERT INTO HORA_ATENCION SET HORA_INICIO = '${fechaInicio}', HORA_FIN = '${fechaFin}';`,
+    `INSERT INTO HORA_ATENCION SET HORA_INICIO = '${fechaInicio}', HORA_FIN = '${fechaFin}', TOTAL_HORAS = ${totalHoras};`,
     (err, result) => {
       if (err) {
         errorMessage = err;

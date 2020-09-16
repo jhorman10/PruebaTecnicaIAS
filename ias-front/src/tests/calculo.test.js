@@ -11,6 +11,7 @@ describe("Pruebas en calculoHoras", () => {
     };
     const objResponse = [
       {
+        TOTAL_HORAS: 1,
         HORA_INICIO: "2020-09-14T16:00:00.000Z",
         HORA_FIN: "2020-09-14T17:00:00.000Z",
         DIA_SEMANA: 1,

@@ -8,23 +8,23 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+// const TableCell = withStyles((theme) => ({
+//   head: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   },
+//   body: {
+//     fontSize: 14,
+//   },
+// }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    "&:nth-of-type(odd)": {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+// const StyledTableRow = withStyles((theme) => ({
+//   root: {
+//     "&:nth-of-type(odd)": {
+//       backgroundColor: theme.palette.action.hover,
+//     },
+//   },
+// }))(TableRow);
 
 const useStyles = makeStyles({
   table: {
@@ -39,35 +39,35 @@ function TablaCalculo(props) {
     <>
       {data.length !== 0 ? (
         <TableContainer component={Paper}>
-          <Table className={classes.table} aria-label="customized table">
+          <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <StyledTableCell align="center">Tecnico</StyledTableCell>
-                <StyledTableCell align="center">Semana</StyledTableCell>
-                <StyledTableCell align="center">Día</StyledTableCell>
-                <StyledTableCell align="center">Hora de inicio</StyledTableCell>
-                <StyledTableCell align="center">Hora de fin</StyledTableCell>
+                <TableCell align="center">Semana</TableCell>
+                <TableCell align="center">Día</TableCell>
+                <TableCell align="center">Hora de inicio</TableCell>
+                <TableCell align="center">Hora de fin</TableCell>
+                <TableCell align="center">Total horas</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((data) => (
-                <StyledTableRow key={data.name}>
-                  <StyledTableCell align="center">
-                    {data.ID_TECNICO}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
+                <TableRow key={data.name}>
+                  <TableCell align="center">
                     {data.NUMERO_SEMANA}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
+                  </TableCell>
+                  <TableCell align="center">
                     {data.DIA_SEMANA}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
+                  </TableCell>
+                  <TableCell align="center">
                     {data.HORA_INICIO}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
+                  </TableCell>
+                  <TableCell align="center">
                     {data.HORA_FIN}
-                  </StyledTableCell>
-                </StyledTableRow>
+                  </TableCell>
+                  <TableCell align="center">
+                    {data.TOTAL_HORAS}
+                  </TableCell>
+                </TableRow>
               ))}
             </TableBody>
           </Table>
