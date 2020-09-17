@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require("body-parser");
 const moment = require("moment");
 const cors = require("cors");
+const utils = require("../utils");
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -25,7 +26,7 @@ app.get("/servicio", (req, res) => {
   WHERE ID_TECNICO = ${cc_tecnico} AND NUMERO_SEMANA = ${semana};`,
     (err, results) => {
       if (err) throw err;
-      data = results;
+      let data = results;
       res.json({
         data,
         ok: true,
@@ -38,14 +39,22 @@ app.get("/servicio", (req, res) => {
 app.post("/reporte-servicio", (req, res, next) => {
   let query = req.query;
   let { fechaFin, fechaInicio, servicio, tecnico } = query;
-  let diaSemana = moment(fechaInicio).day();
-  let numeroSemana = moment(fechaInicio).format("w");
-  let horaInicio = moment(fechaInicio).format("HH");
-  let horaFin = moment(fechaFin).format("HH");
-  let totalHoras = horaFin - horaInicio;
-  console.log("horaInicio: ", horaInicio);
-  console.log("horaFin: ", horaFin);
-  console.log("totalHoras: ", totalHoras);
+  let diaSemana = utils.calcularDiaDelaSemana(fechaInicio);
+  let numeroSemana = utils.calcularSemanaDelAnio(fechaInicio);
+  let horaInicio = utils.CalcularHoraInicio(fechaInicio);
+  let horaFin = utils.CalcularHoraFin(fechaFin);
+  let totalHoras = utils.calcularHorasTrabajadasPorDia(fechaInicio, fechaFin);
+  let horaSemana;
+  utils
+    .calcularHorasTrabajadasPorSemana(tecnico, numeroSemana)
+    .then((hora) => {
+      horaSemana = hora;
+      console.log('horaSemana: ', horaSemana)
+      return horaSemana;
+    });
+
+    console.log('hola: ', horaSemana)
+
   let body = {
     fechaInicio,
     fechaFin,
@@ -54,13 +63,11 @@ app.post("/reporte-servicio", (req, res, next) => {
     diaSemana,
     numeroSemana,
   };
-  let errorMessage;
 
   mysqlCon.connection.query(
     `INSERT INTO SERVICIO SET ID_TIPO_SERVICIO = ${servicio};`,
     (err, result) => {
       if (err) {
-        errorMessage = err;
         res.status(400).json({
           message: err,
         });
@@ -72,7 +79,6 @@ app.post("/reporte-servicio", (req, res, next) => {
     `INSERT INTO SEMANA SET NUMERO_SEMANA = ${numeroSemana};`,
     (err, result) => {
       if (err) {
-        errorMessage = err;
         res.status(400).json({
           message: err,
         });
@@ -84,7 +90,6 @@ app.post("/reporte-servicio", (req, res, next) => {
     `INSERT INTO DIA SET DIA_SEMANA = ${diaSemana};`,
     (err, result) => {
       if (err) {
-        errorMessage = err;
         res.status(400).json({
           message: err,
         });
@@ -96,7 +101,6 @@ app.post("/reporte-servicio", (req, res, next) => {
     `INSERT INTO HORA_ATENCION SET HORA_INICIO = '${fechaInicio}', HORA_FIN = '${fechaFin}', TOTAL_HORAS = ${totalHoras};`,
     (err, result) => {
       if (err) {
-        errorMessage = err;
         res.status(400).json({
           message: err,
         });
@@ -105,10 +109,11 @@ app.post("/reporte-servicio", (req, res, next) => {
     }
   );
   mysqlCon.connection.query(
-    `INSERT INTO TECNICO_SERVICIO SET ID_TECNICO = ${tecnico}, ID_SERVICIO = (SELECT MAX(ID_SERVICIO)  FROM SERVICIO), ID_SEMANA = (SELECT MAX(ID_SEMANA)  FROM SEMANA)`,
+    `INSERT INTO TECNICO_SERVICIO SET ID_TECNICO = ${tecnico}, 
+    ID_SERVICIO = (SELECT MAX(ID_SERVICIO)  FROM SERVICIO), 
+    ID_SEMANA = (SELECT MAX(ID_SEMANA)  FROM SEMANA)`,
     (err, result) => {
       if (err) {
-        errorMessage = err;
         res.status(400).json({
           message: err,
         });
@@ -116,15 +121,12 @@ app.post("/reporte-servicio", (req, res, next) => {
       }
     }
   );
-  console.log(body);
-  console.log(errorMessage);
-
+  // console.log(body);
   res.json({
     body,
     status: 200,
     ok: true,
   });
-
   // res.status(400).send({
   //   status: 400,
   //   message: "Error al intentar insertar en la base de datos",
