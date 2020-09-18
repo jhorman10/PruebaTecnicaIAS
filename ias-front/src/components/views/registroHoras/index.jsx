@@ -53,7 +53,7 @@ export function RegistroHoras(props) {
       };
       let dataResponse = apiCall.postServicio(data);
       dataResponse.then((data) => {
-        if (data.status === 200) {
+        if (data !== undefined) {
           setRes(data);
           Swal.fire({
             position: "center-center",

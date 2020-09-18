@@ -12,7 +12,11 @@ class Utils {
   }
 
   calcularDiaDelaSemana(fechaInicio) {
-    return moment(fechaInicio).day();
+    return moment(fechaInicio).format("w");
+  }
+
+  calcularNombreDiaDelaSemana(fechaInicio) {
+      return moment(fechaInicio).format("dddd");
   }
 
   calcularSemanaDelAnio(fechaInicio) {
@@ -35,8 +39,7 @@ class Utils {
           } else {
             const [info] = rows;
             const { TOTAL_HORAS } = info;
-            console.log("TOTAL_HORAS:", TOTAL_HORAS);
-            resolve(TOTAL_HORAS);
+            return resolve(TOTAL_HORAS);
           }
         }
       );
@@ -77,28 +80,6 @@ class Utils {
     } else {
       return totalHorasExtra;
     }
-  }
-
-  calcularHoraExtraNoctura(fechaFin) {
-    let horaFin = moment(fechaFin).format("HH");
-  }
-
-  calcularHoraSabatina(fechaInicio, fechaFin) {
-    let horaInicio = moment(fechaInicio).format("HH");
-    let horaFin = moment(fechaFin).format("HH");
-  }
-
-  calcularHoraDominical(fechaInicio, fechaFin) {
-    let horaInicio = moment(fechaInicio).format("HH");
-    let horaFin = moment(fechaFin).format("HH");
-  }
-
-  calcularHoraExtraSabatina(fechaFin) {
-    let horaFin = moment(fechaFin).format("HH");
-  }
-
-  calcularHoraExtraDominical(fechaFin) {
-    let horaFin = moment(fechaFin).format("HH");
   }
 }
 

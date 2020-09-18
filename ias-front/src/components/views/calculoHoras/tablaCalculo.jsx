@@ -42,27 +42,39 @@ function TablaCalculo(props) {
           <Table className={classes.table} size="small" aria-label="a dense table">
             <TableHead>
               <TableRow>
-                <TableCell align="center">Semana</TableCell>
-                <TableCell align="center">Día</TableCell>
-                <TableCell align="center">Hora de inicio</TableCell>
-                <TableCell align="center">Hora de fin</TableCell>
-                <TableCell align="center">Total horas</TableCell>
+                <TableCell align="center">TECNICO</TableCell>
+                <TableCell align="center">SEMANA</TableCell>
+                <TableCell align="center">HORAs EXTRA</TableCell>
+                <TableCell align="center">HORAs SABATINAS</TableCell>
+                <TableCell align="center">HORAs DOMINICALES</TableCell>
+                <TableCell align="center">HORAs EXTRA NOCTURNAS</TableCell>
+                <TableCell align="center">HORAs EXTRA SABATINAS</TableCell>
+                <TableCell align="center">TOTAL HORAS</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data.map((data) => (
-                <TableRow key={data.name}>
+                <TableRow key={data.ID_TECNICO}>
+                <TableCell align="center">
+                    {data.ID_TECNICO}
+                  </TableCell>
                   <TableCell align="center">
                     {data.NUMERO_SEMANA}
                   </TableCell>
                   <TableCell align="center">
-                    {data.DIA_SEMANA}
+                    {data.HORA_EXTRA}
                   </TableCell>
                   <TableCell align="center">
-                    {data.HORA_INICIO}
+                    {data.HORA_SABATINA}
                   </TableCell>
                   <TableCell align="center">
-                    {data.HORA_FIN}
+                    {data.HORA_DOMINICAL}
+                  </TableCell>
+                  <TableCell align="center">
+                    {data.HORA_EXTRA_NOCTURNA}
+                  </TableCell>
+                  <TableCell align="center">
+                    {data.HORA_EXTRA_SABATINA}
                   </TableCell>
                   <TableCell align="center">
                     {data.TOTAL_HORAS}

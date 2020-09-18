@@ -7,7 +7,7 @@ export const getCalculo = async (data) => {
   })
     .then((resp) =>
       resp.json().then((res) => {
-        return res.data;
+        return res;
       })
     )
     .catch((err) => console.log(err));
@@ -25,5 +25,6 @@ export const postServicio = async (data) => {
       })
     )
     .catch((err) => console.log(err));
+  console.log(dataResponse);
   return dataResponse;
 };

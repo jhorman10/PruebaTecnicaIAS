@@ -38,8 +38,8 @@ export function CalcularHoras(props) {
       };
       let dataResponse = apiCall.getCalculo(data);
       dataResponse.then((data) => {
-        if (data.length !== 0) {
-          setData(data);
+        if (data !== undefined) {
+          setData(data.data);
           Swal.fire({
             position: "center-center",
             icon: "success",
