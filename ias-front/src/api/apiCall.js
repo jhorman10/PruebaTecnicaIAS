@@ -20,11 +20,9 @@ export const postServicio = async (data) => {
   })
     .then((resp) =>
       resp.json().then((res) => {
-        console.log(res);
         return res;
       })
     )
     .catch((err) => console.log(err));
-  console.log(dataResponse);
   return dataResponse;
 };

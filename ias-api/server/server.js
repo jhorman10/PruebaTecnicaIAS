@@ -52,8 +52,6 @@ app.post("/reporte-servicio", async (req, res, next) => {
     })
     .catch((err) => console.log(err));
 
-  console.log("horasPorSemana :", horasPorSemana);
-
   let horaDominical;
   let horaNocturna;
   let horaSabatina;
@@ -63,22 +61,26 @@ app.post("/reporte-servicio", async (req, res, next) => {
   let horaExtraDominical;
 
   if (nombreDia == "Saturday") {
+    totalHoras = 0;
     horaSabatina = utils.calcularHorasTrabajadasPorDia(fechaInicio, fechaFin);
   } else if (nombreDia == "Sunday") {
+    totalHoras = 0;
     horaDominical = utils.calcularHorasTrabajadasPorDia(fechaInicio, fechaFin);
   }
 
   if (horasPorSemana > 48) {
     if (nombreDia == "Saturday") {
+      totalHoras = 0;
       horaExtraSabatina = utils.calcularHoraExtra(fechaFin);
     } else if (nombreDia == "Sunday") {
       horaExtraDominical = utils.calcularHoraExtra(fechaFin);
     } else if (horaFin > 20) {
+      totalHoras = 0;
       horaExtraNocturna = utils.calcularHoraExtra(fechaFin);
     }
+    totalHoras = 0;
     horaExtra = utils.calcularHoraExtra(fechaFin);
   }
-
   let body = {
     fechaInicio,
     fechaFin,

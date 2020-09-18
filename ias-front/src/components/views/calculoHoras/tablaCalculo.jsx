@@ -8,24 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-// const TableCell = withStyles((theme) => ({
-//   head: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   body: {
-//     fontSize: 14,
-//   },
-// }))(TableCell);
-
-// const StyledTableRow = withStyles((theme) => ({
-//   root: {
-//     "&:nth-of-type(odd)": {
-//       backgroundColor: theme.palette.action.hover,
-//     },
-//   },
-// }))(TableRow);
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
@@ -44,11 +26,11 @@ function TablaCalculo(props) {
               <TableRow>
                 <TableCell align="center">TECNICO</TableCell>
                 <TableCell align="center">SEMANA</TableCell>
-                <TableCell align="center">HORAs EXTRA</TableCell>
-                <TableCell align="center">HORAs SABATINAS</TableCell>
-                <TableCell align="center">HORAs DOMINICALES</TableCell>
-                <TableCell align="center">HORAs EXTRA NOCTURNAS</TableCell>
-                <TableCell align="center">HORAs EXTRA SABATINAS</TableCell>
+                <TableCell align="center">HORAS EXTRA</TableCell>
+                <TableCell align="center">HORAS SABATINAS</TableCell>
+                <TableCell align="center">HORAS DOMINICALES</TableCell>
+                <TableCell align="center">HORAS EXTRA NOCTURNAS</TableCell>
+                <TableCell align="center">HORAS EXTRA SABATINAS</TableCell>
                 <TableCell align="center">TOTAL HORAS</TableCell>
               </TableRow>
             </TableHead>
